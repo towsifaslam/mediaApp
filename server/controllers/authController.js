@@ -1,7 +1,7 @@
 import Users from'../models/userModel.js';
 import {compareString, createJTW, hashString}from'../ults/index.js'
-import { sendVerificationEmail } from '../ults/sendEmail.js';
-
+// import { sendVerificationEmail } from '../ults/.js';
+// sendEmail
 export const register = async(req,res,next)=>{
   const {firstName,lastName,email,password} = req.body
   
@@ -18,16 +18,21 @@ export const register = async(req,res,next)=>{
       return;
     }
     const hashedPassword = await hashString(password)
+    console.log(hashedPassword)
      
     // create user 
     const user = await Users.create({
       firstName,
-      lastName,
+      lastName, 
       email,
-      password,hashedPassword
+      password:hashedPassword
+    })
+    res.status(201).json({
+      message:"create sucessufully",
+      user: user
     })
 
-    sendVerificationEmail(user,res)
+    // sendVerificationEmail(user,res)
   } catch (error) {
     console.log(error)
     res.status(404).json({message: error.message})
